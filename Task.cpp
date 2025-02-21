@@ -5,6 +5,8 @@
 #include <thread>
 #include <chrono>
 
+using namespace std;
+
 class Task {
 
 public:
@@ -14,8 +16,8 @@ public:
     Task(int id, int exec_time) : task_id(id), execution_time(exec_time) {}
 
     void execute() {
-        std::this_thread::sleep_for(std::chrono::milliseconds(execution_time));
-        std::cout << "Task " << task_id << " Completed In " << execution_time << "ms\n";
+        this_thread::sleep_for(chrono::milliseconds(execution_time));
+        cout << "Task " << task_id << " Completed In " << execution_time << "ms\n";
     }
 };
 
