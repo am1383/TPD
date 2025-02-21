@@ -8,12 +8,14 @@
 #include <condition_variable>
 #include "Task.h"
 
+using namespace std;
+
 class ThreadPool {
 private:
-    std::vector<std::thread> workers;
-    std::queue<Task> taskQueue;
-    std::mutex queueMutex;
-    std::condition_variable condition;
+    vector<thread> workers;
+    queue<Task> taskQueue;
+    mutex queueMutex;
+    condition_variable condition;
     bool stop;
 
 public:
@@ -31,7 +33,7 @@ ThreadPool::ThreadPool(int numThreads) : stop(false) {
 
 void ThreadPool::enqueueTask(Task task) {
     {
-        std::unique_lock<std::mutex> lock(queueMutex);
+        unique_lock<mutex> lock(queueMutex);
         taskQueue.push(task);
     }
     condition.notify_one(); 
@@ -41,7 +43,7 @@ void ThreadPool::workerThread() {
     while (true) {
         Task task(0, 0);
         {
-            std::unique_lock<std::mutex> lock(queueMutex);
+            unique_lock<mutex> lock(queueMutex);
             condition.wait(lock, [this]() { return !taskQueue.empty() || stop; });
 
             if (stop && taskQueue.empty())
@@ -56,11 +58,11 @@ void ThreadPool::workerThread() {
 
 ThreadPool::~ThreadPool() {
     {
-        std::unique_lock<std::mutex> lock(queueMutex);
+        unique_lock<mutex> lock(queueMutex);
         stop = true;
     }
     condition.notify_all();
-    for (std::thread &worker : workers) {
+    for (thread &worker : workers) {
         worker.join();
     }
 }
