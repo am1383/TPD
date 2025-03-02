@@ -1,61 +1,85 @@
-# **Thread Pool Simulator**  
+# Multi-Threaded Task Scheduler
 
-## **Introduction**  
-This project is a **Thread Pool Simulator** implemented in **C++** using `pthread`. It simulates the execution of multiple tasks by a fixed number of worker threads. Each task has a specified execution time, and the system reports the total execution time and task completion details.  
+This project implements a **multi-threaded task scheduler** using a **thread pool** and a **thread-safe queue**. Tasks are read from a file and scheduled based on their **arrival time** and **burst time**.
 
-## **Features**  
-- Implements a **thread pool** with **mutex** and **conditional variables** for synchronization.  
-- Uses **a queue** to store tasks before execution.  
-- **Parallel execution** of tasks using multiple worker threads.  
-- **Reports** the total execution time and individual task completion details.  
+## Features
+- Uses a **ThreadPool** to manage worker threads.
+- Implements a **ThreadQueue** with a custom **Mutex** for thread synchronization.
+- Reads tasks from a file and sorts them based on their **arrival time**.
+- Simulates real-time execution by delaying task addition based on arrival time.
+- Uses **condition variables** for efficient thread synchronization.
 
-## **Requirements**  
-To compile and run the program, you need:  
-- **C++ compiler** (`g++`)  
-- **POSIX Threads Library (`pthread`)**  
+## File Format
+The input file should contain tasks in the following format:
+```
+<arrival_time> <burst_time>
+```
+Example (`Task.txt`):
+```
+0 2
+1 3
+4 1
+6 5
+```
 
-## **Compilation & Execution**  
+## Code Structure
+### 1. **Mutex**
+A simple **spinlock-based mutex** using `std::atomic` to avoid busy-waiting.
 
-### **1. Compilation**  
-Use the following command to compile the program:  
-```bash
+### 2. **ThreadQueue**
+A **thread-safe queue** with a maximum size limit using `Mutex` and `condition_variable_any`.
+
+### 3. **Task Structure**
+```cpp
+struct Task {
+    int id;
+    int burstTime;
+    int arrivalTime;
+};
+```
+Each task has an **ID**, **burst time** (execution duration), and **arrival time** (when it should be added to the queue).
+
+### 4. **ThreadPool**
+A **thread pool** that maintains worker threads, which continuously fetch and execute tasks from `ThreadQueue`.
+
+### 5. **FileReader**
+Reads tasks from the input file, sorts them by **arrival time**, and adds them to the queue at the appropriate moment.
+
+## How to Run
+1. **Compile the Code**:
+```sh
 g++ -o app main.cpp
 ```
 
-### **2. Running the Program**  
-Simply execute the compiled program:  
-```bash
+2. **Run the Executable**:
+```sh
 ./app
 ```
 
-## **Program Behavior**  
-- The number of worker threads is set to **3** inside the code.  
-- The tasks are predefined in the program with different execution times.  
-- The program automatically starts threads, processes tasks, and generates the report.  
+## Configuration
+- **Worker Count**: Adjust the number of worker threads in `main()`:
+  ```cpp
+  int workerCount = 3;
+  ```
+- **Queue Size**: Set the maximum size of `ThreadQueue`:
+  ```cpp
+  int queueSize = 4;
+  ```
+- **Input File**: Change the task file name if needed:
+  ```cpp
+  string fileName = "Task.txt";
+  ```
 
-## **Predefined Tasks in the Code**  
+## Example Output
 ```
-Task 0: Execution Time = 3s
-Task 1: Execution Time = 4s
-Task 2: Execution Time = 7s
-Task 3: Execution Time = 5s
-Task 4: Execution Time = 6s
-```
-
-## **Example Output**  
-After execution, the program prints a **report** like this:  
-```
-Simulation Result
-----------------
-Total Simulation Time: 25 Seconds
-Number Of Completed Tasks: 5
-- Task 0: Start=0s, End=3s
-- Task 1: Start=3s, End=7s
-- Task 2: Start=7s, End=14s
-- Task 3: Start=14s, End=19s
-- Task 4: Start=19s, End=25s
+Worker 0 Started Task 1 (Arrival Time 0s)
+Worker 0 Finished Task 1 (Burst Time 2s)
+Worker 1 Started Task 2 (Arrival Time 1s)
+Worker 1 Finished Task 2 (Burst Time 3s)
+...
 ```
 
-## **Files Included**  
-- `thread_pool.cpp` → Source code  
-- `README.md` → Documentation  
+## Notes
+- Ensure the input file follows the correct format.
+- Tasks are scheduled based on **arrival time**, so they may not be executed immediately after reading.
+- The program will terminate when all tasks are completed.
