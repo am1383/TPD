@@ -1,75 +1,61 @@
-# Thread Pool Simulation in C++
+# **Thread Pool Simulator**  
 
-## Overview
-This project implements a **Thread Pool** in C++ to efficiently manage concurrent task execution. It includes:
-- **ThreadPool Manager**: Creates and manages worker threads.
-- **Worker Threads**: Execute tasks from a **task queue**.
-- **Task Queue**: A thread-safe queue that holds pending tasks.
-- **Simulation Environment**: Reads input configurations, runs the simulation, and generates reports.
+## **Introduction**  
+This project is a **Thread Pool Simulator** implemented in **C++** using `pthread`. It simulates the execution of multiple tasks by a fixed number of worker threads. Each task has a specified execution time, and the system reports the total execution time and task completion details.  
 
-## Features
-- Multi-threaded execution using **std::thread**, **mutex**, and **condition_variable**.
-- Thread-safe **task queue**.
-- Configurable thread pool with **dynamic task handling**.
-- Simulation environment that **logs task execution** and generates a final report.
+## **Features**  
+- Implements a **thread pool** with **mutex** and **conditional variables** for synchronization.  
+- Uses **a queue** to store tasks before execution.  
+- **Parallel execution** of tasks using multiple worker threads.  
+- **Reports** the total execution time and individual task completion details.  
 
-## Prerequisites
-- **C++11 or later**
-- A C++ compiler like `g++`
+## **Requirements**  
+To compile and run the program, you need:  
+- **C++ compiler** (`g++`)  
+- **POSIX Threads Library (`pthread`)**  
 
-## Installation & Compilation
-### **Step 1: Clone the Repository**
+## **Compilation & Execution**  
+
+### **1. Compilation**  
+Use the following command to compile the program:  
 ```bash
- git clone <repository_link>
- cd thread-pool-simulation
+g++ -o app main.cpp
 ```
-### **Step 2: Compile the Code**
+
+### **2. Running the Program**  
+Simply execute the compiled program:  
 ```bash
-g++ -std=c++11 main.cpp -o simulation
+./app
 ```
 
-## Usage
-### **Step 1: Create an Input Configuration File**
-The input file (e.g., `config.txt`) should be formatted as follows:
+## **Program Behavior**  
+- The number of worker threads is set to **3** inside the code.  
+- The tasks are predefined in the program with different execution times.  
+- The program automatically starts threads, processes tasks, and generates the report.  
+
+## **Predefined Tasks in the Code**  
 ```
-3  # Number of worker threads
-1 500  # Task ID 1, Execution time 500ms
-2 700  # Task ID 2, Execution time 700ms
-3 600  # Task ID 3, Execution time 600ms
-4 800  # Task ID 4, Execution time 800ms
+Task 0: Execution Time = 3s
+Task 1: Execution Time = 4s
+Task 2: Execution Time = 7s
+Task 3: Execution Time = 5s
+Task 4: Execution Time = 6s
 ```
 
-### **Step 2: Run the Simulation**
-```bash
-./simulation
+## **Example Output**  
+After execution, the program prints a **report** like this:  
+```
+Simulation Result
+----------------
+Total Simulation Time: 25 Seconds
+Number Of Completed Tasks: 5
+- Task 0: Start=0s, End=3s
+- Task 1: Start=3s, End=7s
+- Task 2: Start=7s, End=14s
+- Task 3: Start=14s, End=19s
+- Task 4: Start=19s, End=25s
 ```
 
-### **Step 3: View the Output**
-The program prints logs such as:
-```
-Task 1 completed in 500ms
-Task 2 completed in 700ms
-Task 3 completed in 600ms
-Task 4 completed in 800ms
-```
-
-## Project Structure
-```
-├── Task.h                  # Defines a task with execution time
-├── ThreadPool.h            # Implements the thread pool
-├── SimulationEnvironment.h # Handles simulation logic
-├── main.cpp                # Runs the simulation
-├── config.txt              # Sample input file
-└── README.md               # Project documentation
-```
-
-## Future Improvements
-- Implement **dynamic thread scaling** based on workload.
-- Use **std::future** for retrieving task execution results.
-- Improve **logging** and reporting mechanisms.
-
-## License
-This project is licensed under the **MIT License**.
-
-## Author
-Developed by **Your Name**
+## **Files Included**  
+- `thread_pool.cpp` → Source code  
+- `README.md` → Documentation  

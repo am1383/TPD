@@ -128,7 +128,7 @@ class ThreadPool {
             cout << "Simulation Result\n";
             cout << "----------------\n";
             if (!completed_tasks.empty()) {
-                cout << "Total Simulation Time: " << completed_tasks.back().end_time << " seconds\n";
+                cout << "Total Simulation Time: " << completed_tasks.back().end_time << " Seconds\n";
             } else {
                 cout << "Total Simulation Time: 0 Seconds\n";
             }
