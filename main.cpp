@@ -102,10 +102,10 @@ private:
             }
 
             cout << "Worker " << id << " Started Task "  << task.id
-                      << " (Arrival Time " << task.arrivalTime << "s)\n";
+                      << " <Arrival Time " << task.arrivalTime << "s>\n";
 
             cout << "Worker " << id << " Finished Task " << task.id
-                      << " (Burst Time "   << task.burstTime << "s)\n";
+                      << " <Excution Time "   << task.burstTime << "s>\n";
         }
         exit(1);
     }

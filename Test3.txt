@@ -6,3 +6,20 @@
 0 4
 0 3
 1 4
+
+Worker 2 Started Task 6 <Arrival Time 0s>
+Worker 2 Finished Task 6 <Excution Time 4s>
+Worker 1 Started Task 7 <Arrival Time 0s>
+Worker 1 Finished Task 7 <Excution Time 3s>
+Worker 0 Started Task 1 <Arrival Time 0s>
+Worker 0 Finished Task 1 <Excution Time 5s>
+Worker 2 Started Task 8 <Arrival Time 1s>
+Worker 2 Finished Task 8 <Excution Time 4s>
+Worker 1 Started Task 2 <Arrival Time 3s>
+Worker 1 Finished Task 2 <Excution Time 5s>
+Worker 0 Started Task 3 <Arrival Time 6s>
+Worker 0 Finished Task 3 <Excution Time 5s>
+Worker 2 Started Task 4 <Arrival Time 9s>
+Worker 2 Finished Task 4 <Excution Time 5s>
+Worker 1 Started Task 5 <Arrival Time 12s>
+Worker 1 Finished Task 5 <Excution Time 5s>

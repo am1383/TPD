@@ -69,6 +69,7 @@ g++ -o app main.cpp
   ```cpp
   string fileName = "Task.txt";
   ```
+  Note : Input Test in Task file
 
 ## Example Output
 ```
