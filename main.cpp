@@ -6,8 +6,6 @@
 #include <thread>
 #include <atomic>
 #include <condition_variable>
-#include <chrono>
-#include <stdexcept>
 #include <algorithm>
 
 using namespace std;
@@ -173,10 +171,10 @@ void FileReader(ThreadPool& pool, const string& fileName) {
 }
 
 int main() {
-    int workerCount = 9;      
-    int qeueSize    = 9;       
+    int workerCount = 3;      
+    int qeueSize    = 4;       
 
-    string fileName = "Test1.txt";  
+    string fileName = "Task.txt";  
 
     ThreadPool pool(workerCount, qeueSize);
     FileReader(pool, fileName);
