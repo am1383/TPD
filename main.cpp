@@ -46,7 +46,7 @@ public:
         mutex.lock();
 
         while (queue.size() >= maxSize) {
-            cvNotFull.wait(mutex);
+            //
         }
 
         queue.push(item);
