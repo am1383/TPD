@@ -18,12 +18,12 @@ This C++ program implements a simple **Thread Pool Task Scheduler** that reads t
 ### Compilation
 Use the following command to compile the program:
 ```sh
- g++ -std=c++11 -o task_scheduler main.cpp
+ g++ -o app main.cpp
 ```
 
 ### Execution
 ```sh
- ./task_scheduler
+ ./app
 ```
 Ensure the **task file** (`Task.txt`) is present in the same directory.
 
