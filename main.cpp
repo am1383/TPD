@@ -30,7 +30,7 @@ public:
 template <typename T>
 class ThreadQueue {
 private:
-    queue<T> queue;
+    std::queue<T> queue;
     Mutex mutex;
     size_t maxSize;
 
