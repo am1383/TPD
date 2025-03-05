@@ -40,34 +40,38 @@ public:
     void Push(const T& item) {
         while (true) {
             mutex.lock();
+
             if (queue.size() < maxSize) {
                 queue.push(item);
                 mutex.unlock();
                 return;
             }
+
             mutex.unlock();
             this_thread::yield();
         }
     }
 
-    T Pop() {
-        while (true) {
-            mutex.lock();
-            if (!queue.empty()) {
-                T item = queue.front();
-                queue.pop();
-                mutex.unlock();
-                return item;
-            }
+    bool Pop(T& item) {
+        mutex.lock();
+
+        if (!queue.empty()) {
+            item = queue.front();
+            queue.pop();
             mutex.unlock();
-            this_thread::yield();
+            return true;
         }
+
+        mutex.unlock();
+
+        return false;
     }
 
     bool IsEmpty() {
         mutex.lock();
         bool empty = queue.empty();
         mutex.unlock();
+
         return empty;
     }
 };
@@ -84,7 +88,9 @@ private:
     vector<thread> workers;
     atomic<bool> stop;
     atomic<int> activeWorkers;
+    atomic<int> usedWorkers{0}; 
     atomic<bool> coutLock{false};
+    atomic<bool> done{false}; 
 
     void SafePrint(const string& message) {
         while (coutLock.exchange(true, memory_order_acquire)) {
@@ -95,9 +101,14 @@ private:
     }
 
     void Worker(int id) {
+        bool didWork = false;
         while (!stop || !taskQueue.IsEmpty()) {
-            if (!taskQueue.IsEmpty()) {
-                Task task = taskQueue.Pop();
+            Task task;
+            if (taskQueue.Pop(task)) {
+                if (!didWork) {
+                    usedWorkers.fetch_add(1, memory_order_relaxed);
+                    didWork = true;
+                }
                 SafePrint("Worker " + to_string(id) + " Started Task " + to_string(task.id) +
                           " <Arrival Time " + to_string(task.arrivalTime) + "s>");
 
@@ -105,6 +116,8 @@ private:
 
                 SafePrint("Worker " + to_string(id) + " Finished Task " + to_string(task.id) +
                           " <Execution Time " + to_string(task.burstTime) + "s>");
+            } else if (done) {
+                break;
             } else {
                 this_thread::yield();
             }
@@ -127,11 +140,15 @@ public:
                 worker.join();
             }
         }
-        SafePrint("Total workers used: " + to_string(workers.size()));
+        SafePrint("Total Workers Used: " + to_string(usedWorkers.load()));
     }
 
     void AddTask(const Task& task) {
         taskQueue.Push(task);
+    }
+
+    void SetDone() {
+        done = true;
     }
 };
 
@@ -168,10 +185,12 @@ void FileReader(ThreadPool& pool, const string& fileName) {
         this_thread::sleep_until(startTime + chrono::seconds(task.arrivalTime));
         pool.AddTask(task);
     }
+
+    pool.SetDone(); 
 }
 
 int main() {
-    int workerCount = 3;
+    int workerCount = 10;
     int queueSize   = 4;
     string fileName = "Task.txt";
 
