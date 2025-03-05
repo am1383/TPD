@@ -172,7 +172,7 @@ void FileReader(ThreadPool& pool, const string& fileName) {
 
 int main() {
     int workerCount = 3;
-    int queueSize = 4;
+    int queueSize   = 4;
     string fileName = "Task.txt";
 
     ThreadPool pool(workerCount, queueSize);
