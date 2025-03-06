@@ -13,7 +13,7 @@ This C++ program implements a simple **Thread Pool Task Scheduler** that reads t
 ## Compilation & Execution
 ### Prerequisites
 - C++11 or later (for `std::thread`, `std::atomic`, `std::queue`).
-- A C++ compiler (GCC, Clang, or MSVC).
+- A C++ compiler (GCC).
 
 ### Compilation
 Use the following command to compile the program:
@@ -25,11 +25,12 @@ Use the following command to compile the program:
 ```sh
  ./app
 ```
-Ensure the **task file** (`Task.txt`) is present in the same directory.
+Ensure the **task file** (`Task.txt`) and input test info in file.
 
 ## Task File Format
-The input file (`Task.txt`) should contain **tasks**, each defined by an arrival time and a burst time (execution duration), separated by a space. Example:
+The input file (`Task.txt`) should contain **tasks** and queue, worker config, each task defined by an arrival time and a burst time (execution duration), separated by a space. Example:
 ```txt
+10 4 # Worker count 10, queue size 4
 0 3  # Task arrives at 0s, runs for 3s
 2 2  # Task arrives at 2s, runs for 2s
 4 1  # Task arrives at 4s, runs for 1s
@@ -54,13 +55,13 @@ Holds task metadata:
 - Ensures proper thread synchronization and graceful shutdown.
 
 ### 5. **File Reader** (`FileReader` function)
-- Reads tasks from a file.
+- Reads tasks, queue size, worker count from file.
 - Sorts tasks by arrival time.
 - Pushes them to the thread pool at the correct time.
 
 ### 6. **Main Function**
-- Initializes the thread pool.
-- Reads tasks from the file.
+- Initializes the thread pool using parameters from the config file.
+- Reads tasks from the task file.
 - Starts processing tasks asynchronously.
 
 ## Example Output
@@ -73,6 +74,3 @@ Worker 2 Started Task 3 <Arrival Time 4s>
 Worker 2 Finished Task 3 <Execution Time 1s>
 Total workers used: 3
 ```
-
-## License
-This project is released under the MIT License.

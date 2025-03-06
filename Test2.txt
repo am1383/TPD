@@ -1,3 +1,4 @@
+10 4
 0 3
 2 3
 4 3
@@ -5,16 +6,16 @@
 8 3
 1 5
 
-Worker 9 Started Task 1 <Arrival Time 0s>
-Worker 6 Started Task 6 <Arrival Time 1s>
-Worker 3 Started Task 2 <Arrival Time 2s>
-Worker 9 Finished Task 1 <Execution Time 3s>
-Worker 1 Started Task 3 <Arrival Time 4s>
-Worker 3 Finished Task 2 <Execution Time 3s>
-Worker 9 Started Task 4 <Arrival Time 6s>
-Worker 6 Finished Task 6 <Execution Time 5s>
-Worker 1 Finished Task 3 <Execution Time 3s>
-Worker 8 Started Task 5 <Arrival Time 8s>
-Worker 9 Finished Task 4 <Execution Time 3s>
+Worker 8 Started Task 2 <Arrival Time 0s>
+Worker 6 Started Task 7 <Arrival Time 1s>
+Worker 7 Started Task 3 <Arrival Time 2s>
+Worker 8 Finished Task 2 <Execution Time 3s>
+Worker 0 Started Task 4 <Arrival Time 4s>
+Worker 7 Finished Task 3 <Execution Time 3s>
+Worker 8 Started Task 5 <Arrival Time 6s>
+Worker 6 Finished Task 7 <Execution Time 5s>
+Worker 0 Finished Task 4 <Execution Time 3s>
+Worker 0 Started Task 6 <Arrival Time 8s>
 Worker 8 Finished Task 5 <Execution Time 3s>
-Total Workers Used: 5
+Worker 0 Finished Task 6 <Execution Time 3s>
+Total Workers Used: 4

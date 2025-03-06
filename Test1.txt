@@ -1,17 +1,19 @@
+10 4
 0 1
 1 1
 2 2
 3 3
 4 5
 
-Worker 7 Started Task 1 <Arrival Time 0s>
-Worker 7 Finished Task 1 <Execution Time 1s>
-Worker 8 Started Task 2 <Arrival Time 1s>
-Worker 7 Started Task 3 <Arrival Time 2s>
-Worker 8 Finished Task 2 <Execution Time 1s>
-Worker 5 Started Task 4 <Arrival Time 3s>
-Worker 7 Finished Task 3 <Execution Time 2s>
-Worker 0 Started Task 5 <Arrival Time 4s>
-Worker 5 Finished Task 4 <Execution Time 3s>
-Worker 0 Finished Task 5 <Execution Time 5s>
-Total Workers Used: 4
+amir@amir:~/Desktop/TPD$ ./app
+Worker 3 Started Task 2 <Arrival Time 0s>
+Worker 0 Started Task 3 <Arrival Time 1s>
+Worker 3 Finished Task 2 <Execution Time 1s>
+Worker 7 Started Task 4 <Arrival Time 2s>
+Worker 0 Finished Task 3 <Execution Time 1s>
+Worker 5 Started Task 5 <Arrival Time 3s>
+Worker 7 Finished Task 4 <Execution Time 2s>
+Worker 8 Started Task 6 <Arrival Time 4s>
+Worker 5 Finished Task 5 <Execution Time 3s>
+Worker 8 Finished Task 6 <Execution Time 5s>
+Total Workers Used: 5

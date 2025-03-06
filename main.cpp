@@ -40,13 +40,11 @@ public:
     void Push(const T& item) {
         while (true) {
             mutex.lock();
-
             if (queue.size() < maxSize) {
                 queue.push(item);
                 mutex.unlock();
                 return;
             }
-
             mutex.unlock();
             this_thread::yield();
         }
@@ -54,16 +52,13 @@ public:
 
     bool Pop(T& item) {
         mutex.lock();
-
         if (!queue.empty()) {
             item = queue.front();
             queue.pop();
             mutex.unlock();
             return true;
         }
-
         mutex.unlock();
-
         return false;
     }
 
@@ -71,7 +66,6 @@ public:
         mutex.lock();
         bool empty = queue.empty();
         mutex.unlock();
-
         return empty;
     }
 };
@@ -109,12 +103,12 @@ private:
                     usedWorkers.fetch_add(1, memory_order_relaxed);
                     didWork = true;
                 }
-                SafePrint("Worker " + to_string(id) + " Started Task " + to_string(task.id) +
+                SafePrint("Worker " + to_string(id) + " Started Task " + to_string(task.id + 1) +
                           " <Arrival Time " + to_string(task.arrivalTime) + "s>");
 
                 this_thread::sleep_for(chrono::seconds(task.burstTime));
 
-                SafePrint("Worker " + to_string(id) + " Finished Task " + to_string(task.id) +
+                SafePrint("Worker " + to_string(id) + " Finished Task " + to_string(task.id + 1) +
                           " <Execution Time " + to_string(task.burstTime) + "s>");
             } else if (done) {
                 break;
@@ -152,16 +146,29 @@ public:
     }
 };
 
-void FileReader(ThreadPool& pool, const string& fileName) {
+bool FileReader(ThreadPool*& pool, const string& fileName, int& workerCount, int& queueSize) {
     ifstream file(fileName);
-
     if (!file) {
         cerr << "File Cannot Be Open! " << fileName << "\n";
-        return;
+        return false;
     }
 
-    vector<Task> tasks;
     string line;
+    
+    if (getline(file, line)) {
+        istringstream iss(line);
+        if (!(iss >> workerCount >> queueSize)) {
+            cerr << "Invalid Format for workerCount and queueSize in " << fileName << "\n";
+            return false;
+        }
+    } else {
+        cerr << "Empty File: " << fileName << "\n";
+        return false;
+    }
+
+    pool = new ThreadPool(workerCount, queueSize);
+
+    vector<Task> tasks;
     int counterId = 1;
 
     while (getline(file, line)) {
@@ -183,19 +190,23 @@ void FileReader(ThreadPool& pool, const string& fileName) {
 
     for (const auto& task : tasks) {
         this_thread::sleep_until(startTime + chrono::seconds(task.arrivalTime));
-        pool.AddTask(task);
+        pool->AddTask(task);
     }
 
-    pool.SetDone(); 
+    pool->SetDone(); 
+    return true;
 }
 
 int main() {
-    int workerCount = 10;
-    int queueSize   = 4;
     string fileName = "Task.txt";
+    int workerCount, queueSize;
+    ThreadPool* pool = nullptr;
 
-    ThreadPool pool(workerCount, queueSize);
-    FileReader(pool, fileName);
+    if (!FileReader(pool, fileName, workerCount, queueSize)) {
+        return 1;
+    }
+
+    delete pool; 
 
     return 0;
 }
