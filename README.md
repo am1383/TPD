@@ -12,7 +12,7 @@ This C++ program implements a simple **Thread Pool Task Scheduler** that reads t
 
 ## Compilation & Execution
 ### Prerequisites
-- C++11 or later (for `std::thread`, `std::atomic`, and `std::chrono`).
+- C++11 or later (for `std::thread`, `std::atomic`, `std::queue`).
 - A C++ compiler (GCC, Clang, or MSVC).
 
 ### Compilation
